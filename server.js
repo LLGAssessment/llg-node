@@ -2,9 +2,20 @@
 
 const fs = require('fs');
 
+function read_stdinSync() {
+    var b = new Buffer(1024);
+    var data = '';
+
+    while (true) {
+        var n = fs.readSync(process.stdin.fd, b, 0, b.length);
+        if (!n) break;
+        data += b.toString();
+    }
+    return data
+}
+
 class Programm {
   constructor() {
-    this.fileName = (process.argv)[2];
     this.lookupTree = {};
     this.result = [];
     this.visited = [];
@@ -12,9 +23,8 @@ class Programm {
   }
 
   readFile() {
-    if (!this.fileName) { throw Error('please add a filename program argument'); }
-    const splitFile = fs.readFileSync(this.fileName, 'utf-8').split('\n');
-    const firstLetters = splitFile.map(item => item.slice(0,1));
+    const splitFile = read_stdinSync().split('\n');
+    const firstLetters = splitFile.map(item => item.trim().slice(0,1));
     this.dictionary = splitFile
       .filter(item => item !== '');
   }
