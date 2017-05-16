@@ -12,5 +12,5 @@ Run test and measure its time:
 
 ```bash
 cd llg-node
-time node server.js llg-dataset/70pokemons.txt
+time node server.js < llg-dataset/70pokemons.txt
 ```
